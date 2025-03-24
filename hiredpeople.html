@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hiring Selection</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f5f7;
+            margin: 0;
+            padding: 0;
+        }
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: flex-start;
+            padding: 15px;
+            background-color: #f4f5f7;
+        }
+        .user-menu {
+            position: relative;
+            cursor: pointer;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .user-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+        /* Dropdown */
+        .dropdown {
+            display: none;
+            position: absolute;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            list-style: none;
+            padding: 10px;
+            border-radius: 5px;
+            top: 40px;
+            left: 0;
+            width: 150px;
+        }
+        .dropdown.active {
+            display: block;
+        }
+        .dropdown li {
+            padding: 10px;
+        }
+        .dropdown li a {
+            text-decoration: none;
+            color: black;
+        }
+        /* Container */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 10px;
+        }
+        p {
+            color: #555;
+        }
+        /* Checkbox Styling */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+        }
+        .checkbox-label input {
+            display: none;
+        }
+        .checkbox-label .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #bbb;
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .checkbox-label input:checked + .custom-checkbox {
+            background-color: #3f51b5;
+            border-color: #3f51b5;
+        }
+        .checkbox-label input:checked + .custom-checkbox::after {
+            content: '✔';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        /* Button */
+        .primary-btn {
+            background: #3f51b5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        .primary-btn:hover{
+            background-color: blue;
+        }
+        .primary-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="user-menu">
+            <div class="user-info" onclick="toggleDropdown()">
+                <img src="https://cdn-development.mercury.com/demo-assets/avatars/mercury-demo-dark.png" alt="User Icon" class="user-icon">
+                <span>Vaibhav Battise</span>
+                <span class="arrow">&#9662;</span>
+            </div>
+            <ul class="dropdown">
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Legal</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Log Out</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <h2>Have you hired any of the following people?</h2>
+            <p>Select all that apply. We'll help you easily add team members.</p>
+
+            <div class="options">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="hiring" value="employees" onclick="updateButtonState()"> 
+                    <span class="custom-checkbox"></span>
+                    Employee(s)
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="hiring" value="contractors" onclick="updateButtonState()"> 
+                    <span class="custom-checkbox"></span>
+                    Contractor(s)
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="hiring" value="bookkeepers" onclick="updateButtonState()"> 
+                    <span class="custom-checkbox"></span>
+                    Bookkeeper(s)
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="hiring" value="none" onclick="selectNone(this)"> 
+                    <span class="custom-checkbox"></span>
+                    None of the above
+                </label>
+            </div>
+
+            <button id="nextButton" class="primary-btn" disabled>Next</button>
+        </div>
+    </main>
+</body>
+<script>
+    // Dropdown toggle function
+    function toggleDropdown() {
+        const dropdown = document.querySelector(".dropdown");
+        dropdown.classList.toggle("active");
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (event) {
+        const dropdown = document.querySelector(".dropdown");
+        const userMenu = document.querySelector(".user-info");
+        if (!userMenu.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.remove("active");
+        }
+    });
+    
+    // Toggle checkboxes and enable button
+    function updateButtonState() {
+        const checkboxes = document.querySelectorAll("input[name='hiring']");
+        const button = document.getElementById("nextButton");
+    
+        let anyChecked = false;
+        checkboxes.forEach((checkbox) => {
+            if (checkbox.checked) {
+                anyChecked = true;
+            }
+        });
+    
+        button.disabled = !anyChecked;
+    }
+    
+    // If "None of the above" is selected, uncheck others
+    function selectNone(clickedOption) {
+        const checkboxes = document.querySelectorAll("input[name='hiring']");
+    
+        if (clickedOption.checked) {
+            checkboxes.forEach((checkbox) => {
+                if (checkbox !== clickedOption) {
+                    checkbox.checked = false;
+                }
+            });
+        }
+    
+        updateButtonState();
+    }
+</script>
+</html>

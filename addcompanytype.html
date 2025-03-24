@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Restrictions - Mercury</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        /* Header */
+        header {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .logo-container img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 30px;
+        }
+        /* Dropdown Menu */
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .angle-icon {
+            font-size: 14px;
+            margin-left: 4px;
+            transition: transform 0.2s ease;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 100px;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            margin-top: 8px;
+            display: none;
+        }
+        .dropdown-menu li {
+            padding: 10px;
+            text-align: left;
+            list-style-type: none;
+        }
+        .dropdown-menu li a {
+            text-decoration: none;
+            color: #333;
+            display: block;
+        }
+        .dropdown-menu li:hover {
+            background-color: #f4f4f9;
+        }
+        /* Show dropdown when active */
+        .dropdown.active .dropdown-menu {
+            display: block;
+        }
+        /* Card */
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 450px;
+            text-align: left;
+        }
+        h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .checkbox-list {
+            list-style: none;
+            padding: 0;
+        }
+        .checkbox-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+        .checkbox-list input {
+            margin-right: 10px;
+        }
+        .checkbox-list a {
+            color: #635bff;
+            text-decoration: none;
+        }
+        .primary-btn {
+            width: 100%;
+            background-color: #635bff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            color: white;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+        .company-type-form {
+            margin: 20px;
+            max-width: 1200px;
+        }
+        .checkbox-list {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 20px 40px;
+            margin-bottom: 20px;
+            align-items: start;
+        }
+        .checkbox-column {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .label-column {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .checkbox-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .label-text {
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .next-button {
+            padding: 12px 24px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s, content 0.2s;
+            margin-top: 20px;
+        }
+        .next-button:hover {
+            background-color: #1d4ed8;
+        }
+        /* Optional: Style for checked items */
+        .checkbox-item input[type="checkbox"]:checked + label {
+            color: #2563eb;
+            font-weight: 500;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="https://cdn-development.mercury.com/demo-assets/avatars/mercury-demo-dark.png" alt="Mercury Logo">
+            <div class="dropdown-container">
+                <div class="dropdown-toggle">
+                    <!-- User name and angle will be inserted here by JavaScript -->
+                </div>
+                <div class="dropdown-menu">
+                    <li><a href="#">Settings</a></li>
+                    <li><a href="#">Legal</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Log Out</a></li>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>Is your company any of the following?</h2>
+
+            <div class="company-type-form">
+                <div class="checkbox-list">
+                    <div class="checkbox-column">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="sec_registered" value="Registered with the SEC">
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="publicly_traded" value="A publicly-traded company">
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="majority_owned" value="Majority owned by a public company">
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="gambling" value="An internet gambling business">
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="controlled_substances" value="Dealing with Controlled Substances (THC, other Schedule I drugs)">
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="firearms" value="Involved in the sale, distribution or manufacturing of firearms or ammunition">
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="government" value="A government organization">
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="tax_anticipation" value="Part of a tax anticipation program">
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="adult_entertainment" value="An adult entertainment business">
+                        </div>
+                    </div>
+
+                    <div class="label-column">
+                        <label class="label-text" for="sec_registered">Registered with the SEC</label>
+                        <label class="label-text" for="publicly_traded">A publicly-traded company</label>
+                        <label class="label-text" for="majority_owned">Majority owned by a public company</label>
+                        <label class="label-text" for="gambling">An internet gambling business</label>
+                        <label class="label-text" for="controlled_substances">Dealing with Controlled Substances (THC, other Schedule I drugs)</label>
+                        <label class="label-text" for="firearms">Involved in the sale, distribution or manufacturing of firearms or ammunition</label>
+                        <label class="label-text" for="government">A government organization</label>
+                        <label class="label-text" for="tax_anticipation">Part of a tax anticipation program</label>
+                        <label class="label-text" for="adult_entertainment">An adult entertainment business</label>
+                    </div>
+                </div>
+
+                <button type="button" onclick="handleNextButton()" class="next-button">
+                    None of the above
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    // Function to toggle the dropdown menu
+    function toggleDropdown() {
+        const dropdown = document.querySelector(".dropdown");
+        dropdown.classList.toggle("active");
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (event) {
+        const dropdown = document.querySelector(".dropdown");
+        if (!dropdown.contains(event.target)) {
+            dropdown.classList.remove("active");
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Update user name in dropdown
+        updateUserName();
+        
+        // Existing checkbox functionality
+        const nextButton = document.querySelector('.next-button');
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        updateButtonText();
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateButtonText);
+        });
+    });
+
+    function updateUserName() {
+        // Get current user data from localStorage
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        
+        if (currentUser) {
+            // Get the dropdown toggle button
+            const dropdownButton = document.querySelector('.dropdown-toggle');
+            
+            if (dropdownButton) {
+                // Update the button text with user's name and angle icon
+                dropdownButton.innerHTML = `
+                    ${currentUser.firstName} ${currentUser.lastName}
+                    <i class="fa-solid fa-angle-down angle-icon"></i>
+                `;
+
+                // Add click event to toggle the angle
+                dropdownButton.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    
+                    // Toggle the angle icon
+                    const angleIcon = dropdownButton.querySelector('.angle-icon');
+                    angleIcon.classList.toggle('fa-angle-down');
+                    angleIcon.classList.toggle('fa-angle-up');
+                    
+                    // Toggle dropdown menu if it exists
+                    const dropdownMenu = document.querySelector('.dropdown-menu');
+                    if (dropdownMenu) {
+                        const isDropdownVisible = dropdownMenu.style.display === 'block';
+                        dropdownMenu.style.display = isDropdownVisible ? 'none' : 'block';
+                    }
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(event) {
+                    const dropdownMenu = document.querySelector('.dropdown-menu');
+                    if (dropdownMenu && !dropdownButton.contains(event.target)) {
+                        dropdownMenu.style.display = 'none';
+                        // Reset to down angle
+                        const angleIcon = dropdownButton.querySelector('.angle-icon');
+                        angleIcon.classList.remove('fa-angle-up');
+                        angleIcon.classList.add('fa-angle-down');
+                    }
+                });
+            }
+        }
+    }
+
+    // Existing button text update function
+    function updateButtonText() {
+        const nextButton = document.querySelector('.next-button');
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+        nextButton.textContent = anyChecked ? 'Next' : 'None of the above';
+    }
+
+    function handleNextButton() {
+        const checkedBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        
+        // If no boxes are checked, redirect to interestedfeatures.html
+        if (checkedBoxes.length === 0) {
+            updateDatabase([], 'externalfunding.html');
+        } else {
+            // If boxes are checked, redirect to logout.html
+            const selectedTypes = Array.from(checkedBoxes).map(checkbox => checkbox.value);
+            updateDatabase(selectedTypes, 'logout.html');
+        }
+    }
+
+    function updateDatabase(selectedTypes, redirectPage) {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+        fetch('https://construct-week-7c9aa-default-rtdb.firebaseio.com/users.json')
+        .then(response => response.json())
+        .then(data => {
+            const users = Array.isArray(data) ? data : [];
+            
+            const userIndex = users.findIndex(user => 
+                user.workEmail === currentUser.workEmail
+            );
+
+            if (userIndex !== -1) {
+                users[userIndex] = {
+                    ...users[userIndex],
+                    companyTypes: selectedTypes,
+                    companyTypesAddedAt: new Date().toISOString()
+                };
+
+                return fetch('https://construct-week-7c9aa-default-rtdb.firebaseio.com/users.json', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(users)
+                });
+            } else {
+                throw new Error('User not found in database');
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(() => {
+            // Update localStorage
+            const updatedUser = {
+                ...currentUser,
+                companyTypes: selectedTypes
+            };
+            localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+
+            // Redirect to appropriate page
+            window.location.href = redirectPage;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error saving your selection. Please try again.');
+        });
+    }
+</script>
+</html>

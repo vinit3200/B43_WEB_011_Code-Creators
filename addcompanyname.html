@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Name - Mercury</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        /* Header */
+        header {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .logo-container img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 30px;
+        }
+        /* Dropdown Menu */
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .angle-icon {
+            font-size: 14px;
+            margin-left: 4px;
+            transition: transform 0.2s ease;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 100px;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            margin-top: 8px;
+            display: none;
+        }
+        .dropdown-item {
+            padding: 12px 16px;
+            cursor: pointer;
+        }
+        .dropdown-item:hover {
+            background-color: #f3f4f6;
+        }
+        /* Card */
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: left;
+        }
+        h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 14px;
+            color: #555;
+        }
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        button {
+            width: 100%;
+            background-color: #ccc;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            color: white;
+            margin-top: 15px;
+            cursor: not-allowed;
+        }
+        button.enabled {
+            background-color: #635bff;
+            cursor: pointer;
+        }
+        .disclaimer {
+            font-size: 12px;
+            color: #777;
+            margin-top: 15px;
+        }
+        .company-form {
+            margin: 20px;
+        }
+        #companyName {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+            max-width: 340px;
+            margin-bottom: 15px;
+        }
+        .next-button {
+            padding: 10px 20px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .next-button:hover {
+            background-color: #1d4ed8;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="https://cdn-development.mercury.com/demo-assets/avatars/mercury-demo-dark.png" alt="Mercury Logo">
+            <div class="dropdown-container">
+                <div class="dropdown-toggle">
+                    <!-- User name and angle will be inserted here by JavaScript -->
+                </div>
+                <div class="dropdown-menu">
+                    <!-- Your dropdown items -->
+                    <div class="dropdown-item">Settings</div>
+                    <div class="dropdown-item">Legal</div>
+                    <div class="dropdown-item">Contact</div>
+                    <div class="dropdown-item">FAQ</div>
+                    <div class="dropdown-item">Log Out</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>What is your company's name?</h2>
+            <p>This will appear on your Mercury account, but doesn't have to be your legal or trade name (you'll add that later).</p>
+            
+            <div class="company-form">
+                <input 
+                    type="text" 
+                    id="companyName" 
+                    placeholder="Enter your company name"
+                    required
+                >
+                <button 
+                    type="button" 
+                    onclick="handleNextButton()"
+                    class="next-button"
+                >
+                    Next
+                </button>
+            </div>
+
+            <p class="disclaimer">
+                By clicking "Next," I acknowledge that I'm legally authorized to enter into this agreement on the company's behalf.
+            </p>
+        </div>
+    </div>
+</body>
+<script>
+    // Function to enable/disable the Next button
+    function toggleNextButton() {
+        const inputField = document.getElementById("companyName");
+        const nextButton = document.querySelector(".next-button");
+
+        if (inputField.value.trim().length > 0) {
+            nextButton.classList.add("enabled");
+            nextButton.removeAttribute("disabled");
+        } else {
+            nextButton.classList.remove("enabled");
+            nextButton.setAttribute("disabled", "true");
+        }
+    }
+
+    // Function to toggle the dropdown menu
+    function toggleDropdown() {
+        const dropdown = document.querySelector(".dropdown");
+        dropdown.classList.toggle("active");
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (event) {
+        const dropdown = document.querySelector(".dropdown");
+        if (!dropdown.contains(event.target)) {
+            dropdown.classList.remove("active");
+        }
+    });
+
+    // Add this script to your addcompanyname.html page
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        
+        if (currentUser) {
+            const dropdownButton = document.querySelector('.dropdown-toggle');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            
+            if (dropdownButton) {
+                // Set initial content
+                dropdownButton.innerHTML = `
+                    ${currentUser.firstName} ${currentUser.lastName}
+                    <i class="fa-solid fa-angle-down angle-icon"></i>
+                `;
+
+                // Toggle dropdown and angle
+                dropdownButton.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    
+                    const isDropdownVisible = dropdownMenu.style.display === 'block';
+                    dropdownMenu.style.display = isDropdownVisible ? 'none' : 'block';
+                    
+                    const angleIcon = dropdownButton.querySelector('.angle-icon');
+                    angleIcon.classList.toggle('fa-angle-down');
+                    angleIcon.classList.toggle('fa-angle-up');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                        dropdownMenu.style.display = 'none';
+                        const angleIcon = dropdownButton.querySelector('.angle-icon');
+                        angleIcon.classList.remove('fa-angle-up');
+                        angleIcon.classList.add('fa-angle-down');
+                    }
+                });
+            }
+        }
+    });
+
+    function handleNextButton() {
+        // Get the company name from input
+        const companyName = document.getElementById('companyName').value.trim();
+
+        // Validate company name
+        if (!companyName) {
+            alert('Please enter your company name');
+            return;
+        }
+
+        // Get current user from localStorage
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+        // Fetch all users from database
+        fetch('https://construct-week-7c9aa-default-rtdb.firebaseio.com/users.json')
+        .then(response => response.json())
+        .then(data => {
+            const users = Array.isArray(data) ? data : [];
+            
+            // Find the index of the current user
+            const userIndex = users.findIndex(user => 
+                user.workEmail === currentUser.workEmail
+            );
+
+            if (userIndex !== -1) {
+                // Update user with company name
+                users[userIndex] = {
+                    ...users[userIndex],
+                    companyName: companyName,
+                    companyNameAddedAt: new Date().toISOString()
+                };
+
+                // Update database with modified user data
+                return fetch('https://construct-week-7c9aa-default-rtdb.firebaseio.com/users.json', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(users)
+                });
+            } else {
+                throw new Error('User not found in database');
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(() => {
+            // Update localStorage with company name
+            const updatedUser = {
+                ...currentUser,
+                companyName: companyName
+            };
+            localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+
+            // Redirect to company type page
+            window.location.href = 'addcompanytype.html';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error saving your company name. Please try again.');
+        });
+    }
+</script>
+</html>

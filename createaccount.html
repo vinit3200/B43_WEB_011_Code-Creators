@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Account</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        /* Header */
+        header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 30px;
+        }
+        .login-link {
+            text-decoration: none;
+            color: #5a5a5a;
+            font-size: 16px;
+        }
+        /* Signup Card */
+        .signup-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .signup-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: left;
+        }
+        h2 {
+            font-size: 22px;
+            color: #333;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        /* Form Inputs */
+        .input-field {
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 14px;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 370px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        /* Password Field */
+        .password-container {
+            position: relative;
+        }
+        .password-container input {
+            width: calc(100% - 30px);
+        }
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 14px;
+        }
+        small {
+            font-size: 12px;
+            color: #777;
+        }
+        /* Button */
+        .signup-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .signup-btn:hover {
+            background-color: #4338ca;
+        }
+        /* Terms */
+        .terms {
+            font-size: 12px;
+            color: #777;
+            margin-top: 15px;
+        }
+        .terms a {
+            color: #4f46e5;
+            text-decoration: none;
+        }
+        .terms a:hover {
+            text-decoration: underline;
+        }
+        /* Responsive */
+        @media (max-width: 450px) {
+            .signup-card {
+                width: 90%;
+            }
+        }
+        /* Error Message */
+        .error-message {
+            background-color: #fee2e2;
+            border: 1px solid #ef4444;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+        .error-message a {
+            color: #dc2626;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://cdn-development.mercury.com/demo-assets/avatars/mercury-demo-dark.png" alt="Logo" class="logo">
+        <a href="login.html" class="login-link">Log in ></a>
+    </header>
+
+    <div class="signup-container">
+        <div class="signup-card">
+            <h2>Create your account</h2>
+            <p class="subtitle">You will use this email and password to log in across devices</p>
+            
+            <form id="createAccountForm">
+                <div class="input-field">
+                    <label for="workEmail">Work email</label>
+                    <input type="email" id="workEmail" placeholder="Work email" required>
+                </div>
+                <div class="input-field password-field">
+                    <label for="password">Password</label>
+                    <div class="password-container">
+                        <input type="password" id="password" placeholder="Password" required>
+                        <span class="toggle-password">👁️</span>
+                    </div>
+                    <small>Minimum 10 characters</small>
+                </div>
+
+                <button type="button" class="signup-btn" id="nextButton" onclick="handleNextButton()">Next</button>
+
+                <p class="terms">
+                    By clicking "Next", I agree to Mercury's 
+                    <a href="#">Terms of Use</a>, <a href="#">Privacy Policy</a>, and to receive electronic communication about my accounts and services per 
+                    <a href="#">Mercury's Electronic Communications Agreement</a>, and acknowledge receipt of 
+                    <a href="#">Mercury's USA PATRIOT Act disclosure</a>.
+                </p>
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const passwordInput = document.getElementById("password");
+        const togglePassword = document.querySelector(".toggle-password");
+
+        togglePassword.addEventListener("click", function () {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                togglePassword.textContent = "👁️‍🗨️"; // Change icon
+            } else {
+                passwordInput.type = "password";
+                togglePassword.textContent = "👁️"; // Revert icon
+            }
+        });
+    });
+
+    function handleNextButton() {
+        const workEmail = document.getElementById('workEmail').value;
+        const password = document.getElementById('password').value;
+
+        // Validate input
+        if (!workEmail || !password) {
+            alert('Please fill in both work email and password');
+            return;
+        }
+
+        // Email validation
+        if (!isValidEmail(workEmail)) {
+            alert('Please enter a valid work email');
+            return;
+        }
+
+        // Password validation
+        if (password.length < 8) {
+            alert('Password must be at least 8 characters long');
+            return;
+        }
+
+        fetch('https://construct-week-7c9aa-default-rtdb.firebaseio.com/users.json')
+        .then(response => response.json())
+        .then(data => {
+            const users = Array.isArray(data) ? data : [];
+            
+            // Check if email already exists
+            const existingUser = users.find(user => user.workEmail === workEmail);
+            
+            if (existingUser) {
+                // Email already exists - handle existing user case
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                const updatedUsers = users.filter(user => 
+                    !(user.firstName === currentUser.firstName && 
+                      user.lastName === currentUser.lastName)
+                );
+
+                return fetch('https://construct-week-7c9aa-default-rtdb.firebaseio.com/users.json', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedUsers)
+                })
+                .then(() => {
+                    localStorage.removeItem('currentUser');
+                    alert('An account with this email already exists. Please login instead.');
+                    window.location.href = 'login.html';
+                });
+            } else {
+                // Email doesn't exist, proceed with updating the recent user
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                const lastUserIndex = users.findIndex(user => 
+                    user.firstName === currentUser.firstName && 
+                    user.lastName === currentUser.lastName
+                );
+
+                if (lastUserIndex !== -1) {
+                    users[lastUserIndex] = {
+                        ...users[lastUserIndex],
+                        workEmail: workEmail,
+                        password: password,
+                        accountCreatedAt: new Date().toISOString()
+                    };
+
+                    return fetch('https://construct-week-7c9aa-default-rtdb.firebaseio.com/users.json', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(users)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Update localStorage with new user data
+                        localStorage.setItem('currentUser', JSON.stringify({
+                            ...currentUser,
+                            workEmail: workEmail
+                        }));
+                        
+                        // Redirect to addcompanyname.html page
+                        window.location.href = 'addcompanyname.html';
+                    });
+                }
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('There was an error processing your request. Please try again.');
+        });
+    }
+
+    // Email validation helper function
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    function validatePassword(password) {
+        const requirements = {
+            length: password.length >= 8,
+            hasUpper: /[A-Z]/.test(password),
+            hasLower: /[a-z]/.test(password),
+            hasNumber: /[0-9]/.test(password)
+        };
+        
+        return Object.values(requirements).every(Boolean);
+    }
+
+    // Custom error message function
+    function showErrorMessage() {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.innerHTML = `
+            <p>An account with this email already exists.</p>
+            <p>Please <a href="login.html">login</a> instead.</p>
+        `;
+        document.getElementById('createAccountForm').prepend(errorDiv);
+    }
+</script>
+</html>

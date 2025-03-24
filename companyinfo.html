@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercury Dashboard - Company Info</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f5f7;
+        }
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: white;
+            border-bottom: 1px solid #ddd;
+        }
+        .logo {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        /* User Menu */
+        .user-menu {
+            position: relative;
+            cursor: pointer;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .user-icon {
+            background: lightblue;
+            color: black;
+            border-radius: 50%;
+            padding: 8px;
+            width: 32px;
+            height: 32px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 40px;
+            background: white;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            list-style: none;
+            padding: 10px;
+            width: 120px;
+        }
+        .dropdown.active {
+            display: block;
+        }
+        .dropdown li {
+            padding: 8px;
+            text-align: left;
+        }
+        .dropdown li a {
+            text-decoration: none;
+            color: black;
+        }
+        /* Layout */
+        .container {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: white;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+        }
+        .sidebar h2 {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .steps {
+            list-style: none;
+            padding: 0;
+        }
+        .steps li {
+            padding: 12px;
+            color: gray;
+            display: flex;
+            align-items: center;
+        }
+        .steps li.active {
+            font-weight: bold;
+            color: black;
+            border-left: 3px solid #3f51b5;
+            padding-left: 10px;
+        }
+        /* Form */
+        .form-container {
+            flex-grow: 1;
+            padding: 40px;
+            background: white;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        input, select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            margin-top: 5px;
+        }
+        /* Phone Input */
+        .phone-input {
+            display: flex;
+            gap: 5px;
+        }
+        .phone-input select {
+            width: 30%;
+        }
+        small a {
+            color: #3f51b5;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">MERCURY</div>
+        <div class="user-menu">
+            <div class="user-info" onclick="toggleDropdown()">
+                <div class="user-icon">VB</div>
+                <span class="arrow">&#9662;</span>
+            </div>
+            <ul class="dropdown">
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container">
+        <aside class="sidebar">
+            <h2>1 / 6</h2>
+            <ul class="steps">
+                <li class="active">Company info</li>
+                <li>Company address</li>
+                <li>Ownership details</li>
+                <li>Company documents</li>
+                <li>Expected activity</li>
+                <li>Follow-up questions</li>
+            </ul>
+        </aside>
+
+        <section class="form-container">
+            <h2>Company info</h2>
+            <form>
+                <label>Legal business name</label>
+                <input type="text" placeholder="Enter business name">
+
+                <label>Country of incorporation</label>
+                <select>
+                    <option>United States</option>
+                    <option>Canada</option>
+                    <option>India</option>
+                </select>
+
+                <label>Phone number (with country code)</label>
+                <div class="phone-input">
+                    <select>
+                        <option>🇮🇳 +91</option>
+                        <option>🇺🇸 +1</option>
+                        <option>🇬🇧 +44</option>
+                    </select>
+                    <input type="tel" placeholder="123 456 789" >
+                </div>
+
+                <label>Employer Identification Number (EIN)</label>
+                <input type="text" placeholder="Enter EIN" >
+                <small><a href="#">Need an EIN?</a></small>
+
+                <label>Company website</label>
+                <input type="url" placeholder="Enter website" >
+            </form>
+        </section>
+    </main>
+</body>
+<script>
+    // Toggle user dropdown menu
+    function toggleDropdown() {
+        const dropdown = document.querySelector(".dropdown");
+        dropdown.classList.toggle("active");
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (event) {
+        const dropdown = document.querySelector(".dropdown");
+        const userMenu = document.querySelector(".user-info");
+        if (!userMenu.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.remove("active");
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mercury Demo Dashboard</title>
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background-color: #f9fafb;
+      color: #111827;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top banner */
+    .top-banner {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: #111827;
+      color: white;
+      padding: 10px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      background-color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-inner {
+      background-color: #111827;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+    }
+
+    .demo-text {
+      font-weight: 600;
+    }
+
+    .welcome-text {
+      color: white;
+      margin-left: 4px;
+    }
+
+    .learn-more {
+      color: white;
+      display: flex;
+      align-items: center;
+      margin-left: 8px;
+    }
+
+    .learn-more:hover {
+      text-decoration: underline;
+    }
+
+    .learn-more i {
+      margin-left: 4px;
+      font-size: 12px;
+    }
+
+    .top-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid #4b5563;
+      color: white;
+      border-radius: 30px;
+    }
+
+    .btn-outline:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-primary {
+      background-color: #4f46e5;
+      border: none;
+      color: white;
+      border-radius: 30px;
+    }
+
+    .btn-primary:hover {
+      background-color: #4338ca;
+    }
+
+    /* Secondary header */
+    .secondary-header {
+      position: sticky;
+      top: 48px;
+      width: 100%;
+      z-index: 999;
+      background-color: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .company-selector {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-right: 150px;
+    }
+
+    .company-logo {
+      background-color: #f3f4f6;
+      border-radius: 10px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .company-logo-inner {
+      background-color: #111827;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+    }
+
+    .company-name {
+      font-weight: 500;
+      color: #1f2937;
+    }
+
+    .search-container {
+      flex: 1;
+      max-width: 650px;
+      margin: 0 25px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 8px 12px 8px 36px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      background-color: #f9fafb;
+      font-size: 14px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    .keyboard-shortcut {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #e5e7eb;
+      color: #6b7280;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .user-actions {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      margin-right: 30px;
+      position: relative;
+    }
+
+    .move-money {
+      position: relative;
+      color: #4f46e5;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 8px 26px;
+      background-color: white;
+      border-radius: 30px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: white;
+      min-width: 200px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 8px 0;
+      margin-top: 8px;
+      z-index: 1100;
+    }
+
+    .dropdown-item {
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      color: #4B5563;
+      font-size: 14px;
+    }
+
+    .dropdown-item:hover {
+      background-color: #F3F4F6;
+    }
+
+    .dropdown-item i {
+      color: #6B7280;
+      font-size: 16px;
+    }
+
+    .notification-bell {
+      color: #4b5563;
+      cursor: pointer;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Main layout */
+    .main-layout {
+      display: flex;
+      flex: 1;
+      margin-left: 224px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 120px;
+      left: 0;
+      width: 224px;
+      background-color: #f9fafb;
+      border-right: 1px solid #e5e7eb;
+      padding: 16px 0;
+      height: calc(100vh - 48px);
+      overflow-y: auto;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      margin: 0 12px 4px;
+      border-radius: 6px;
+      color: #111827;
+      text-decoration: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      background-color: #f3f4f6;
+    }
+
+    .nav-item.active {
+      background-color: #f3f4f6;
+    }
+
+    .nav-item i {
+      width: 20px;
+      margin-right: 12px;
+      color: #6b7280;
+    }
+
+    .nav-item-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .badge {
+      background-color: #e5e7eb;
+      color: #4b5563;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 9999px;
+    }
+
+    .nav-section {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .nav-section-title {
+      padding: 0 12px 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #6b7280;
+      text-transform: uppercase;
+    }
+
+    /* Main content */
+    .main-content {
+      flex: 1;
+      padding: 24px;
+      padding-left: 70px;
+      padding-right: 70px;
+      position: relative;
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 500;
+      color: #111827;
+      margin-bottom: 24px;
+    }
+
+    /* Action buttons */
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary-action {
+      background-color: #4f46e5;
+      border: none;
+      color: white;
+    }
+
+    .btn-outline-action {
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      color: #111827;
+    }
+
+    .btn-outline-action:hover {
+      background-color: #f3f4f6;
+    }
+
+    .btn-customize {
+      position: relative;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      color: #111827;
+      margin-left: 300px;
+    }
+
+    .btn-customize:hover {
+      background-color: #f3f4f6;
+    }
+
+    .btn-action.active {
+      background-color: #4f46e5; /* Blue background */
+      color: white; /* White text */
+    }
+
+    /* Cards grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-balance {
+      grid-column: span 7;
+    }
+
+    .card-accounts {
+      grid-column: span 5;
+    }
+
+    .card-bottom {
+      grid-column: span 4;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: #111827;
+    }
+
+    .card-title i.verified {
+      color: #4f46e5;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+      border: none;
+      color: #6b7280;
+      cursor: pointer;
+    }
+
+    .btn-icon:hover {
+      background-color: #f3f4f6;
+    }
+
+    .card-content {
+      padding: 16px;
+    }
+
+    /* Balance card */
+    .balance-amount {
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 16px;
+    }
+
+    .balance-dollars {
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .balance-cents {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .balance-period {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .period-selector {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #6b7280;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .balance-stats {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 500;
+    }
+
+    .stat-positive {
+      color: #10b981;
+    }
+
+    .stat-negative {
+      color: #ef4444;
+    }
+
+    .chart-container {
+      height: 128px;
+      background-color: #eff6ff;
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100'%3E%3Cpath d='M0,50 C20,40 40,60 60,30 C80,10 100,40 120,50 C140,60 160,40 180,30 C200,20 220,40 240,50 C260,60 280,40 300,30 C320,20 340,40 360,50 C380,60 400,40 420,30' fill='none' stroke='%234f46e5' stroke-width='2'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .chart-area {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100'%3E%3Cpath d='M0,50 C20,40 40,60 60,30 C80,10 100,40 120,50 C140,60 160,40 180,30 C200,20 220,40 240,50 C260,60 280,40 300,30 C320,20 340,40 360,50 C380,60 400,40 420,30 L420,100 L0,100 Z' fill='%234f46e5' fill-opacity='0.1'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .chart-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    /* Accounts card */
+    .account-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+    }
+
+    .account-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .account-icon {
+      background-color: #f3f4f6;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .account-icon-inner {
+      background-color: #111827;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+    }
+
+    .account-name {
+      font-weight: 500;
+    }
+
+    .account-balance {
+      font-weight: 500;
+    }
+
+    .balance-decimals {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .view-all-btn {
+      width: 100%;
+      padding: 8px;
+      margin-top: 8px;
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 14px;
+      color: #111827;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .view-all-btn:hover {
+      background-color: #f3f4f6;
+    }
+
+    .plus-count {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* Bottom cards */
+    .bottom-card-balance {
+      display: flex;
+      align-items: baseline;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .balance-details,
+    .bill-details,
+    .invoice-details {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .autopay {
+      display: flex;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .pay-btn {
+      margin-top: 8px;
+      padding: 8px 16px;
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .inbox,
+    .open-invoices {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .view-link {
+      color: #4f46e5;
+      text-decoration: none;
+    }
+
+    .view-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Help button */
+    .help-button {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: white;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4f46e5;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .help-button:hover {
+      background-color: #f9fafb;
+    }
+
+    .custom-paragraph {
+      width: 100%;
+      height: 350px;
+      padding-top: 10px;
+      margin: 25px auto;
+      background-color: #f9fafb;
+      box-sizing: border-box;
+    }
+
+    .money-movement-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: #111827;
+      margin-top: 16px; /* Adjust spacing as needed */
+    }
+
+    .info-boxes {
+      display: flex;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .info-box {
+      flex: 1;
+      background-color: white;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-header {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .info-amount {
+      font-size: 24px;
+      font-weight: 600;
+      color: #10b981; /* Green for positive, red for negative */
+      margin-bottom: 16px;
+    }
+
+    .info-details {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .info-details ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .info-details li {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .info-details span {
+      font-weight: 500;
+    }
+
+    .logo-image {
+      width: 36px; /* Adjust size as needed */
+      height: 36px;
+      border-radius: 50%;
+    }
+
+    .account-icon-image {
+      width: 32px; /* Adjust size as needed */
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 12px;
+    }
+
+    .btn-customize {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .nav-item.hidden {
+      display: none;
+      padding-left: 50px;
+    }
+
+    .nav-item.show {
+      display: block;
+      padding-left: 50px;
+    }
+
+    .transactions-box {
+      width: 100%;
+      margin-top: 24px;
+      padding: 16px;
+      background-color: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .transactions-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .transactions-table th, .transactions-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .transactions-table th {
+      background-color: #f9fafb;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .transactions-table td {
+      color: #111827;
+    }
+
+    .transactions-table .failed {
+      color: #ef4444;
+      font-weight: bold;
+    }
+
+    .customize-container {
+      display: inline-block;
+      margin-left: 40px; /* Adjust the space as needed */
+      vertical-align: top; /* Aligns with the top of the action buttons */
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Banner -->
+  <div class="top-banner">
+    <div class="logo-section">
+      <img src="https://cdn-development.mercury.com/demo-assets/avatars/mercury-demo-dark.png" alt="Logo" class="logo-image">
+      <span class="demo-text">D E M O</span>
+      <span class="welcome-text">Welcome to the Mercury Demo.</span>
+      <a href="#" class="learn-more">
+        Learn more about Mercury
+        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+      </a>
+    </div>
+    <div class="top-buttons">
+      <button class="btn btn-outline">
+        <i class="fa-solid fa-gear"></i>
+        Customize Demo
+      </button>
+      <button class="btn btn-primary" onclick="window.location.href='signup.html'">
+        Open Account
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Secondary Header -->
+  <div class="secondary-header">
+    <div class="company-selector">
+      <img src="https://cdn-development.mercury.com/demo-assets/avatars/mercury-demo-dark.png" alt="Company Logo" class="logo-image">
+      <span class="company-name">Mercury Demo</span>
+      <i id="companyChevron" class="fa-solid fa-chevron-down" style="color: #6b7280; font-size: 12px;"></i>
+    </div>
+    <div class="search-container">
+      <i class="fa-solid fa-search search-icon"></i>
+      <input type="text" class="search-input" placeholder="Search or jump to">
+      <span class="keyboard-shortcut">Ctrl K</span>
+    </div>
+    <div class="user-actions">
+      <div class="move-money" onclick="toggleMoveMoneyDropdown(event)">
+        Move Money
+        <i class="fa-solid fa-chevron-down" style="font-size: 12px;"></i>
+      </div>
+      <div class="dropdown-menu" id="moveMoneyDropdown">
+        <div class="dropdown-item">
+          <i class="fa-solid fa-paper-plane"></i>
+          Send
+        </div>
+        <div class="dropdown-item">
+          <i class="fa-solid fa-arrow-left"></i>
+          Request
+        </div>
+        <div class="dropdown-item">
+          <i class="fa-solid fa-arrows-left-right"></i>
+          Transfer
+        </div>
+        <div class="dropdown-item">
+          <i class="fa-solid fa-plus"></i>
+          Deposit
+        </div>
+        <div class="dropdown-item">
+          <i class="fa-solid fa-file-invoice"></i>
+          Pay Bill
+        </div>
+        <div class="dropdown-item">
+          <i class="fa-solid fa-file-invoice"></i>
+          Create Invoice
+        </div>
+      </div>
+      <i class="fa-solid fa-bell notification-bell"></i>
+      <div class="user-avatar">
+        <img src="https://via.placeholder.com/32" alt="User">
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="main-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <a href="#" class="nav-item active">
+        <i class="fa-solid fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="#" class="nav-item">
+        <div class="nav-item-content">
+          <div>
+            <i class="fa-solid fa-list-check"></i>
+            <span>Tasks</span>
+          </div>
+          <span class="badge">5</span>
+        </div>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-chart-simple"></i>
+        <span>Transactions</span>
+      </a>
+      <div class="nav-item" style="position: relative;">
+        <div class="nav-item-content" onclick="togglePaymentsOptions()">
+          <div>
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            <span>Payments</span>
+          </div>
+          <i id="paymentsChevron" class="fa-solid fa-chevron-down" style="font-size: 12px; color: #6b7280;"></i>
+        </div>
+      </div>
+      <div class="nav-item hidden payment-option">
+        <span>Requests</span>
+      </div>
+      <div class="nav-item hidden payment-option">
+        <span>Recipients</span>
+      </div>
+      <div class="nav-item hidden payment-option">
+        <span>Wire Drawdowns</span>
+      </div>
+      <div class="nav-item hidden payment-option">
+        <span>ACH Authorizations</span>
+      </div>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-credit-card"></i>
+        <span>Cards</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Capital</span>
+      </a>
+      <div class="nav-item" style="position: relative;">
+        <div class="nav-item-content" onclick="toggleAccountsOptions()">
+          <div>
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Accounts</span>
+          </div>
+          <i id="accountsChevron" class="fa-solid fa-chevron-down" style="font-size: 12px; color: #6b7280;"></i>
+        </div>
+      </div>
+      <div class="nav-item hidden account-option">
+        <span>Credit Card</span>
+      </div>
+      <div class="nav-item hidden account-option">
+        <span>Treasury</span>
+      </div>
+      <div class="nav-item hidden account-option">
+        <span>Ops / Payroll</span>
+      </div>
+      <div class="nav-item hidden account-option">
+        <span>AP</span>
+      </div>
+      <div class="nav-item hidden account-option">
+        <span>AR</span>
+      </div>
+      <div class="nav-item hidden account-option">
+        <span>Checking ••0297</span>
+      </div>
+      <div class="nav-item hidden account-option">
+        <span>Savings ••7658</span>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Workflows</div>
+        <a href="#" class="nav-item">
+          <i class="fa-solid fa-file-lines"></i>
+          <span>Bill Pay</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>Invoicing</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fa-solid fa-receipt"></i>
+          <span>Reimbursements</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fa-solid fa-calculator"></i>
+          <span>Accounting</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <h1 class="page-title">Welcome, Jane</h1>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="btn-action btn-primary-action">
+          <i class="fa-solid fa-paper-plane"></i>
+          Send
+        </button>
+        <button class="btn-action btn-outline-action">
+          <i class="fa-solid fa-arrow-left"></i>
+          Request
+        </button>
+        <button class="btn-action btn-outline-action">
+          <i class="fa-solid fa-arrows-left-right"></i>
+          Transfer
+        </button>
+        <button class="btn-action btn-outline-action">
+          <i class="fa-solid fa-plus"></i>
+          Deposit
+        </button>
+        <button class="btn-action btn-outline-action">
+          <i class="fa-solid fa-file-invoice"></i>
+          Pay Bill
+        </button>
+        <button class="btn-action btn-outline-action">
+          <i class="fa-solid fa-file-invoice"></i>
+          Create Invoice
+        </button>
+        <div class="btn-outline-action btn-customize">
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+          Customize
+        </div>
+      </div>
+
+      <!-- Cards Grid -->
+      <div class="cards-grid">
+        <!-- Balance Card -->
+        <div class="card card-balance">
+          <div class="card-header">
+            <div class="card-title">
+              Mercury balance
+              <i class="fa-solid fa-shield-halved verified"></i>
+            </div>
+            <div class="card-actions">
+              <button class="btn-icon">
+                <i class="fa-solid fa-chart-line"></i>
+              </button>
+              <button class="btn-icon">
+                <i class="fa-solid fa-chart-column"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="balance-amount">
+              <span class="balance-dollars">$5,216,471</span>
+              <span class="balance-cents">.18</span>
+            </div>
+            <div class="balance-period">
+              <div class="period-selector">
+                <span>Last 30 days</span>
+                <i class="fa-solid fa-chevron-down" style="font-size: 12px;"></i>
+              </div>
+              <div class="balance-stats">
+                <div class="stat stat-positive">
+                  <i class="fa-solid fa-arrow-up-right"></i>
+                  <span>$1.7M</span>
+                </div>
+                <div class="stat stat-negative">
+                  <i class="fa-solid fa-arrow-down-right"></i>
+                  <span>-$409K</span>
+                </div>
+              </div>
+            </div>
+            <div class="chart-container">
+              <div class="chart-area"></div>
+              <div class="chart-line"></div>
+            </div>
+            <div class="chart-labels">
+              <span>Feb 21</span>
+              <span>Feb 26</span>
+              <span>Mar 3</span>
+              <span>Mar 8</span>
+              <span>Mar 13</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accounts Card -->
+        <div class="card card-accounts">
+          <div class="card-header">
+            <div class="card-title">Accounts</div>
+            <div class="card-actions">
+              <button class="btn-icon">
+                <i class="fa-solid fa-ellipsis"></i>
+              </button>
+              <button class="btn-icon">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="account-item">
+              <div class="account-info">
+                <img src="https://cdn-development.mercury.com/demo-assets/avatars/mercury-demo-dark.png" alt="Account Icon" class="account-icon-image">
+                <span class="account-name">Credit Card</span>
+              </div>
+              <span class="account-balance">$12,505<span class="balance-decimals">.87</span></span>
+            </div>
+            <div class="account-item">
+              <div class="account-info">
+                <img src="https://cdn-development.mercury.com/demo-assets/avatars/mercury-demo-dark.png" alt="Account Icon" class="account-icon-image">
+                <span class="account-name">Treasury</span>
+              </div>
+              <span class="account-balance">$200,000<span class="balance-decimals">.00</span></span>
+            </div>
+            <div class="account-item">
+              <div class="account-info">
+                <img src="https://cdn-development.mercury.com/demo-assets/avatars/mercury-demo-dark.png" alt="Account Icon" class="account-icon-image">
+                <span class="account-name">Ops / Payroll</span>
+              </div>
+              <span class="account-balance">$2,023,267<span class="balance-decimals">.12</span></span>
+            </div>
+            <div class="account-item">
+              <div class="account-info">
+                <img src="https://cdn-development.mercury.com/demo-assets/avatars/mercury-demo-dark.png" alt="Account Icon" class="account-icon-image">
+                <span class="account-name">AP</span>
+              </div>
+              <span class="account-balance">$226,767<span class="balance-decimals">.82</span></span>
+            </div>
+            <div class="account-item">
+              <div class="account-info">
+                <img src="https://cdn-development.mercury.com/demo-assets/avatars/mercury-demo-dark.png" alt="Account Icon" class="account-icon-image">
+                <span class="account-name">AR</span>
+              </div>
+              <span class="account-balance">$0<span class="balance-decimals">.00</span></span>
+            </div>
+            <button class="view-all-btn">
+              <span class="plus-count">+2</span>
+              View all accounts
+            </button>
+          </div>
+        </div>
+
+        <!-- Bottom Cards -->
+        <div class="card card-bottom">
+          <div class="card-header">
+            <div class="card-title">Credit Card</div>
+            <div class="card-actions">
+              <button class="btn-icon">
+                <i class="fa-solid fa-credit-card"></i>
+              </button>
+              <button class="btn-icon">
+                <i class="fa-solid fa-ellipsis"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="bottom-card-balance">
+              <span class="bottom-card-dollars">$12,505</span>
+              <span class="bottom-card-cents">.87</span>
+            </div>
+            <div class="balance-details">
+              <span>Balance</span> • <span>Pending</span> • <span>$21,249 available</span>
+            </div>
+            <div class="autopay">
+              <i class="fa-solid fa-arrows-rotate"></i> Autopay
+              <span>Mar 26</span>
+            </div>
+            <button class="pay-btn">Pay</button>
+          </div>
+        </div>
+
+        <div class="card card-bottom">
+          <div class="card-header">
+            <div class="card-title">Bill Pay</div>
+            <div class="card-actions">
+              <button class="btn-icon">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+              <button class="btn-icon">
+                <i class="fa-solid fa-ellipsis"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="bill-details">
+              <span>Outstanding 11</span> • <span>Overdue 1</span> • <span>Due soon -</span>
+            </div>
+            <div class="inbox">
+              Inbox <span>3 bills</span>
+              <a href="#" class="view-link">View</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-bottom">
+          <div class="card-header">
+            <div class="card-title">Invoicing</div>
+            <div class="card-actions">
+              <button class="btn-icon">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+              <button class="btn-icon">
+                <i class="fa-solid fa-ellipsis"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="invoice-details">
+              <span>Overdue 4 • $950.00</span> • <span>Paid 12 • $6K</span>
+            </div>
+            <div class="open-invoices">
+              Open <span>12 invoices • $12.3K</span>
+              <a href="#" class="view-link">View</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New paragraph -->
+      <div class="custom-paragraph">
+        <div class="money-movement-text">
+          Money movement &gt; Mar 2025
+        </div>
+        <div class="info-boxes">
+          <div class="info-box">
+            <div class="info-header">Money in</div>
+            <div class="info-amount">$1,672,154.92</div>
+            <div class="info-details">
+              <div>Top sources</div>
+              <ul>
+                <li>Venture Debt Loan <span>$1,000,000.00</span></li>
+                <li>GenPro <span>$414,983.19</span></li>
+                <li>Google <span>$59,504.89</span></li>
+                <li>Milgram Brokerage <span>$51,895.19</span></li>
+                <li>View all</li>
+              </ul>
+              <div>Last 3 months average <span>$45.9K</span></div>
+            </div>
+          </div>
+          <div class="info-box">
+            <div class="info-header">Money out</div>
+            <div class="info-amount">-$376,105.61</div>
+            <div class="info-details">
+              <div>Top spend</div>
+              <ul>
+                <li>Jordi O'Donnell <span>-$90,797.16</span></li>
+                <li>Gusto (Payroll) <span>-$90,122.53</span></li>
+                <li>Google <span>-$60,236.91</span></li>
+                <li>Milgram Brokerage <span>-$48,027.44</span></li>
+                <li>View all</li>
+              </ul>
+              <div>Last 3 months average <span>-$145K</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transactions Box -->
+      <div class="transactions-box">
+        <h2>Recent transactions</h2>
+        <table class="transactions-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>To/From</th>
+              <th>Amount</th>
+              <th>Account</th>
+              <th>Payment Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mar 24</td>
+              <td><i class="fa-solid fa-user"></i> Contractor</td>
+              <td>−$213.11</td>
+              <td>Ops / Payroll</td>
+              <td><i class="fa-solid fa-paper-plane"></i> Mercury ACH Payment</td>
+            </tr>
+            <tr>
+              <td>Mar 22</td>
+              <td><i class="fa-solid fa-user"></i> Payment from Acme Corp</td>
+              <td>$200.00</td>
+              <td>AR</td>
+              <td><i class="fa-solid fa-arrow-right"></i> Request or Invoice Pay...</td>
+            </tr>
+            <tr>
+              <td>Mar 22</td>
+              <td><i class="fa-solid fa-user"></i> Payment from NASA <span class="failed">Failed</span></td>
+              <td>$419.00</td>
+              <td>AR</td>
+              <td><i class="fa-solid fa-arrow-right"></i> Request or Invoice Pay...</td>
+            </tr>
+            <tr>
+              <td>Mar 21</td>
+              <td><i class="fa-solid fa-building"></i> Mercury Working Capital</td>
+              <td>−$2,200.00</td>
+              <td>Ops / Payroll</td>
+              <td><i class="fa-solid fa-arrow-left"></i> Working Capital Loan ...</td>
+            </tr>
+            <tr>
+              <td>Mar 20</td>
+              <td><i class="fa-solid fa-utensils"></i> Lily's Eatery</td>
+              <td>$0.93</td>
+              <td>Ops / Payroll</td>
+              <td><i class="fa-solid fa-credit-card"></i> Jane B. ••1234</td>
+            </tr>
+            <tr>
+              <td>Mar 19</td>
+              <td><i class="fa-solid fa-arrow-right"></i> From AR</td>
+              <td>$54,810.16</td>
+              <td>Ops / Payroll</td>
+              <td><i class="fa-solid fa-exchange-alt"></i> Transfer</td>
+            </tr>
+            <tr>
+              <td>Mar 18</td>
+              <td><i class="fa-solid fa-arrow-left"></i> To Ops / Payroll</td>
+              <td>−$54,810.16</td>
+              <td>AR</td>
+              <td><i class="fa-solid fa-exchange-alt"></i> Transfer</td>
+            </tr>
+            <tr>
+              <td>Mar 17</td>
+              <td><i class="fa-solid fa-store"></i> Deli 77</td>
+              <td>$6.91</td>
+              <td>Credit account</td>
+              <td><i class="fa-solid fa-credit-card"></i> Jane B. ••5555</td>
+            </tr>
+            <tr>
+              <td>Mar 16</td>
+              <td><i class="fa-solid fa-store"></i> Deli 77</td>
+              <td>$23.28</td>
+              <td>Ops / Payroll</td>
+              <td><i class="fa-solid fa-credit-card"></i> Landon S. ••4929</td>
+            </tr>
+            <tr>
+              <td>Mar 15</td>
+              <td><i class="fa-solid fa-building"></i> Office Stop Co.</td>
+              <td>−$287.89</td>
+              <td>Ops / Payroll</td>
+              <td><i class="fa-solid fa-credit-card"></i> Jessica A. ••9914</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help Button -->
+  <div class="help-button">
+    <i class="fa-solid fa-question"></i>
+  </div>
+
+  <script>
+    function toggleMoveMoneyDropdown(event) {
+      event.stopPropagation();
+      const dropdown = document.getElementById('moveMoneyDropdown');
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Close dropdown when clicking outside
+    window.onclick = function(event) {
+      if (!event.target.closest('.move-money')) {
+        const dropdown = document.getElementById('moveMoneyDropdown');
+        if (dropdown.style.display === 'block') {
+          dropdown.style.display = 'none';
+        }
+      }
+    }
+
+    function togglePaymentsOptions() {
+      const paymentOptions = document.querySelectorAll('.payment-option');
+      const paymentsChevron = document.querySelector('#paymentsChevron');
+      
+      paymentOptions.forEach(option => {
+        option.classList.toggle('hidden');
+        option.classList.toggle('show');
+      });
+
+      // Toggle the chevron icon
+      paymentsChevron.classList.toggle('fa-chevron-down');
+      paymentsChevron.classList.toggle('fa-chevron-up');
+    }
+
+    function toggleAccountsOptions() {
+      const accountOptions = document.querySelectorAll('.account-option');
+      const accountsChevron = document.querySelector('#accountsChevron');
+      
+      accountOptions.forEach(option => {
+        option.classList.toggle('hidden');
+        option.classList.toggle('show');
+      });
+
+      // Toggle the chevron icon
+      accountsChevron.classList.toggle('fa-chevron-down');
+      accountsChevron.classList.toggle('fa-chevron-up');
+    }
+  </script>
+</body>
+</html>

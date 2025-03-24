@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feature Selection</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f5f7;
+            margin: 0;
+            padding: 0;
+        }
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: flex-start;
+            padding: 15px;
+            background-color: #f4f5f7;
+        }
+        .user-menu {
+            position: relative;
+            cursor: pointer;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .user-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+        /* Dropdown */
+        .dropdown {
+            display: none;
+            position: absolute;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            list-style: none;
+            padding: 10px;
+            border-radius: 5px;
+            top: 40px;
+            left: 0;
+            width: 150px;
+        }
+        .dropdown.active {
+            display: block;
+        }
+        .dropdown li {
+            padding: 10px;
+        }
+        .dropdown li a {
+            text-decoration: none;
+            color: black;
+        }
+        /* Container */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 10px;
+        }
+        p {
+            color: #555;
+        }
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .feature-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+        }
+        .feature-card:hover {
+            border-color: blue;
+        }
+        .feature-card.selected {
+            border-color: blue;
+            background-color: #eef4ff;
+        }
+        .icon {
+            font-size: 24px;
+            display: block;
+        }
+        /* Button */
+        .primary-btn {
+            background: #3f51b5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        .primary-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="user-menu">
+            <div class="user-info" onclick="toggleDropdown()">
+                <img src="https://cdn-development.mercury.com/demo-assets/avatars/mercury-demo-dark.png" alt="User Icon" class="user-icon">
+                <span>Vaibhav Battise</span>
+                <span class="arrow">&#9662;</span>
+            </div>
+            <ul class="dropdown">
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Legal</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Log Out</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <h2>Which Mercury features are you interested in?</h2>
+            <p>Select all that apply. We’ll customize your experience accordingly.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card" onclick="toggleSelection(this)">
+                    <span class="icon">🏦</span>
+                    <h3>Checking & Savings</h3>
+                    <p>Core banking</p>
+                </div>
+                <div class="feature-card" onclick="toggleSelection(this)">
+                    <span class="icon">💳</span>
+                    <h3>Credit Cards</h3>
+                    <p>1.5% cashback</p>
+                </div>
+                <div class="feature-card" onclick="toggleSelection(this)">
+                    <span class="icon">📜</span>
+                    <h3>Bill Pay</h3>
+                    <p>Accounts payable</p>
+                </div>
+                <div class="feature-card" onclick="toggleSelection(this)">
+                    <span class="icon">🧾</span>
+                    <h3>Invoicing</h3>
+                    <p>Simplified invoices</p>
+                </div>
+                <div class="feature-card" onclick="toggleSelection(this)">
+                    <span class="icon">💰</span>
+                    <h3>Reimbursements</h3>
+                    <p>Expense management</p>
+                </div>
+                <div class="feature-card" onclick="toggleSelection(this)">
+                    <span class="icon">📈</span>
+                    <h3>Working Capital</h3>
+                    <p>Ecommerce loans</p>
+                </div>
+            </div>
+
+            <button id="nextButton" class="primary-btn">Next</button>
+        </div>
+    </main>
+</body>
+<script>
+    // Dropdown toggle function
+    function toggleDropdown() {
+        const dropdown = document.querySelector(".dropdown");
+        dropdown.classList.toggle("active");
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (event) {
+        const dropdown = document.querySelector(".dropdown");
+        const userMenu = document.querySelector(".user-info");
+        if (!userMenu.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.remove("active");
+        }
+    });
+    
+    // Toggle feature selection and enable button
+    function toggleSelection(card) {
+        card.classList.toggle("selected");
+        updateButtonState();
+    }
+    
+    // Update button text and state
+    function updateButtonState() {
+        const selectedCards = document.querySelectorAll(".feature-card.selected");
+        const button = document.getElementById("nextButton");
+    
+        if (selectedCards.length > 0) {
+            button.textContent = "Next";
+            button.disabled = false;
+        } else {
+            button.textContent = "Next";
+            button.disabled = true;
+        }
+    }
+    
+    // Disable button initially
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("nextButton").disabled = true;
+    });
+</script>
+</html>

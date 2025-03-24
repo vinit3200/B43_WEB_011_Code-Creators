@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        /* Header */
+        header {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            right: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 30px;
+        }
+        .login-link {
+            text-decoration: none;
+            color: #5a5a5a;
+            font-size: 16px;
+        }
+        /* Signup Card */
+        .signup-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .signup-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: left;
+        }
+        h2 {
+            font-size: 22px;
+            color: #333;
+        }
+        p {
+            font-size: 14px;
+            color: #555;
+        }
+        /* Form Inputs */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 14px;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 170px;
+            padding: 10px;
+            margin-right: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        /* Button */
+        .signup-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .signup-btn:hover {
+            background-color: #4338ca;
+        }
+        /* Terms */
+        .terms {
+            font-size: 12px;
+            color: #777;
+            margin-top: 15px;
+        }
+        .terms a {
+            color: #4f46e5;
+            text-decoration: none;
+        }
+        .terms a:hover {
+            text-decoration: underline;
+        }
+        /* Responsive */
+        @media (max-width: 450px) {
+            .signup-card {
+                width: 90%;
+            }
+            .input-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://cdn-development.mercury.com/demo-assets/avatars/mercury-demo-dark.png" alt="Logo" class="logo">
+        <a href="login.html" class="login-link">Log in ></a>
+    </header>
+
+    <div class="signup-container">
+        <div class="signup-card">
+            <h2>Get started</h2>
+            <p>Apply in 10 minutes.</p>
+            
+            <form id="signupForm">
+                <div class="input-group">
+                    <div class="input-field">
+                        <label for="firstName">First name</label>
+                        <input type="text" id="firstName" placeholder="First name" required>
+                    </div>
+                    <div class="input-field">
+                        <label for="lastName">Last name</label>
+                        <input type="text" id="lastName" placeholder="Last name" required>
+                    </div>
+                </div>
+                
+                <button type="button" class="signup-btn" onclick="handleStartApplication()">Start Application</button>
+
+                <p class="terms">
+                    By clicking "Start Application", I agree to Mercury's 
+                    <a href="#">Terms of Use</a>, <a href="#">Privacy Policy</a> 
+                    and to receive electronic communication about my accounts and services per 
+                    <a href="#">Mercury's Electronic Communications Agreement</a>, and acknowledge receipt of 
+                    <a href="#">Mercury's USA PATRIOT Act disclosure</a>.
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    function handleStartApplication() {
+        // Get user input values
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+
+        // Validate input
+        if (!firstName || !lastName) {
+            alert('Please fill in both first name and last name');
+            return;
+        }
+
+        // Create user object
+        const userData = {
+            firstName: firstName,
+            lastName: lastName,
+            timestamp: new Date().toISOString()
+        };
+
+        // First, check if users file exists
+        fetch('https://construct-week-7c9aa-default-rtdb.firebaseio.com/users.json', {
+            method: 'GET'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data === null) {
+                // Users file doesn't exist, create it with first user
+                return fetch('https://construct-week-7c9aa-default-rtdb.firebaseio.com/users.json', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify([userData]) // Start with an array containing the first user
+                });
+            } else {
+                // Users file exists, append new user
+                const users = Array.isArray(data) ? data : [];
+                users.push(userData);
+                return fetch('https://construct-week-7c9aa-default-rtdb.firebaseio.com/users.json', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(users)
+                });
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Success:', data);
+            // Store user data in localStorage for future use if needed
+            localStorage.setItem('currentUser', JSON.stringify({
+                firstName: firstName,
+                lastName: lastName
+            }));
+            
+            // Redirect to createaccount.html
+            window.location.href = 'createaccount.html';
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('There was an error submitting your application. Please try again.');
+        });
+    }
+    </script>
+</body>
+</html>
